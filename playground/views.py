@@ -1,13 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
-
-def calculate():
-    x = 1
-    y = 2
-    return x
+from django.db.models import Q, F
+from store.models import Product
 
 
 def say_hello(request):
-    x = calculate()
-    return render(request, 'hello.html', {'name': 'Mosh'})
+
+    queryset = Product.objects.prefetch_related(
+        'promotions').select_related('collection').all()
+
+    return render(request, 'hello.html', {'name': 'Mosh', 'products': list(queryset)})
