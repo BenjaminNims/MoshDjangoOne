@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from django.db.models import Q, F
-from store.models import Product
+from django.contrib.contenttypes.models import ContentType
+from django.db import connection
+from store.models import Product, Order, OrderItem, Customer, Collection
 
 
 def say_hello(request):
 
-    queryset = Product.objects.prefetch_related(
-        'promotions').select_related('collection').all()
+    with connection.cursor() as cursor:
+        cursor.execute(' ')
 
-    return render(request, 'hello.html', {'name': 'Mosh', 'products': list(queryset)})
+    return render(request, 'hello.html', {'name': 'Mosh'})
